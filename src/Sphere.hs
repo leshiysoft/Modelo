@@ -3,42 +3,43 @@ module Sphere
   ,sphere
   ,sphereCenterEdge
   ,sphereEdgeEdge
-  ,check
-  ,middle
   ,sphereCenter
-  ,sphereRadius) where
+  ,sphereRadius
+  ,middle) where
 
 import Position
 import Vector
 import Section
 import Shape
-import Wrongful
 
 data Sphere = Sphere Position Double
   deriving (Show)
 
-sphere :: Position -> Double -> Sphere
-sphere = Sphere
+-- definitions
 
-sphereCenterEdge :: Position -> Position -> Sphere
-sphereCenterEdge c e = Sphere c $ dist $ vectorBeginEnd c e
+sphere :: Position -> Double -> Maybe Sphere
+sphere p r
+  | r <= 0 = Nothing
+  | otherwise = Just $ Sphere p r
 
-sphereEdgeEdge :: Position -> Position -> Sphere
-sphereEdgeEdge p1 p2 = Sphere c r
+sphereCenterEdge :: Position -> Position -> Maybe Sphere
+sphereCenterEdge c e = sphere c $ dist $ vectorBeginEnd c e
+
+sphereEdgeEdge :: Position -> Position -> Maybe Sphere
+sphereEdgeEdge p1 p2 = sphere c r
   where
     c = middle $ section p1 p2
     r = (/2) $ dist $ vectorBeginEnd p1 p2
 
-instance Wrongful Sphere where
-  check s
-    | sphereRadius s <= 0 = Nothing
-    | otherwise = Just s
-
-instance Shape Sphere where
-  middle (Sphere c _) = c
+-- properties
 
 sphereCenter :: Sphere -> Position
 sphereCenter (Sphere c _) = c
 
 sphereRadius :: Sphere -> Double
 sphereRadius (Sphere _ r) = r
+
+-- instances
+
+instance Shape Sphere where
+  middle (Sphere c _) = c

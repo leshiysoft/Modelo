@@ -1,24 +1,24 @@
-module Vector
-  (Vector
-  ,vector
-  ,vectorBeginEnd
-  ,dist
-  ,plus
-  ,times
-  ,normalize
-  ,inv
-  ,cross) where
+module Vector where
 
 import Position
 
-data Vector = Vector Position
+data Vector = Vector {vectorPosition :: Position}
   deriving Show
+
+-- definitions
 
 vector :: Position -> Vector
 vector = Vector
 
 vectorBeginEnd :: Position -> Position -> Vector
 vectorBeginEnd p1 p2 = plus (Vector p2) $ inv (Vector p1)
+
+-- functions
+
+nonEmptyVector :: Vector -> Maybe Vector
+nonEmptyVector (Vector p)
+  | p == origin = Nothing
+  | otherwise = Just $ Vector p
 
 dist :: Vector -> Double
 dist (Vector (x,y,z)) = sqrt (x*x+y*y+z*z)
