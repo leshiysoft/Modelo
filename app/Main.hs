@@ -4,6 +4,7 @@ import Vector
 import Section
 import Sphere
 import Plane
+import Extra
 
 main :: IO ()
 main = putStrLn "Hello Modelo"
