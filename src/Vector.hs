@@ -1,29 +1,34 @@
-module Vector where
+module Vector
+  (Vector
+  ,vector
+  ,vectorBeginEnd
+  ,dist
+  ,plus
+  ,times
+  ,normalize
+  ,inv
+  ,cross) where
 
 import Position
-import Canonical
 
 data Vector = Vector Position
-  | Vector2Dots Position Position
   deriving Show
 
-instance Canonical Vector where
-  canon v@(Vector _) = v
-  canon (Vector2Dots p1 p2) =
-    plus (Vector p2) $ inv (Vector p1)
+vector :: Position -> Vector
+vector = Vector
+
+vectorBeginEnd :: Position -> Position -> Vector
+vectorBeginEnd p1 p2 = plus (Vector p2) $ inv (Vector p1)
 
 dist :: Vector -> Double
 dist (Vector (x,y,z)) = sqrt (x*x+y*y+z*z)
-dist v = dist $ canon v
 
 plus :: Vector -> Vector -> Vector
 plus (Vector (x,y,z)) (Vector (u,v,w)) =
   Vector (x+u,y+v,z+w)
-plus v1 v2 = plus (canon v1) (canon v2)
 
 times :: Double -> Vector -> Vector
 times k (Vector (x,y,z)) = Vector (k*x,k*y,k*z)
-times k v = times k $ canon v
 
 normalize :: Vector -> Maybe(Vector)
 normalize v

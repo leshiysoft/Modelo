@@ -1,6 +1,13 @@
-module Sphere where
+module Sphere
+  (Sphere
+  ,sphere
+  ,sphereCenterEdge
+  ,sphereEdgeEdge
+  ,check
+  ,middle
+  ,sphereCenter
+  ,sphereRadius) where
 
-import Canonical
 import Position
 import Vector
 import Section
@@ -8,26 +15,30 @@ import Shape
 import Wrongful
 
 data Sphere = Sphere Position Double
-  | SphereCenterEdge Position Position
-  | SphereDiameter Position Position
   deriving (Show)
 
-instance Canonical Sphere where
-  canon s@(Sphere _ _) = s
-  canon (SphereCenterEdge c e) =
-    Sphere c $ dist $ Vector2Dots c e
-  canon (SphereDiameter p1 p2) = Sphere c r
-    where
-      c = middle $ Section p1 p2
-      r = (/2) $ dist $ Vector2Dots p1 p2
+sphere :: Position -> Double -> Sphere
+sphere = Sphere
+
+sphereCenterEdge :: Position -> Position -> Sphere
+sphereCenterEdge c e = Sphere c $ dist $ vectorBeginEnd c e
+
+sphereEdgeEdge :: Position -> Position -> Sphere
+sphereEdgeEdge p1 p2 = Sphere c r
+  where
+    c = middle $ section p1 p2
+    r = (/2) $ dist $ vectorBeginEnd p1 p2
 
 instance Wrongful Sphere where
   check s
     | sphereRadius s <= 0 = Nothing
     | otherwise = Just s
 
+instance Shape Sphere where
+  middle (Sphere c _) = c
+
 sphereCenter :: Sphere -> Position
-sphereCenter s = let (Sphere c _) = canon s in c
+sphereCenter (Sphere c _) = c
 
 sphereRadius :: Sphere -> Double
-sphereRadius s = let (Sphere _ r) = canon s in r
+sphereRadius (Sphere _ r) = r

@@ -1,9 +1,15 @@
-module Section where
+module Section
+  (Section
+  ,section
+  ,middle) where
 
 import Position
 import Shape
 
 data Section = Section Position Position
+
+section :: Position -> Position -> Section
+section = Section
 
 instance Shape Section where
   middle (Section (x1,y1,z1) (x2,y2,z2)) =
