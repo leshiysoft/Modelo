@@ -5,6 +5,7 @@ import Section
 import Sphere
 import Plane
 import Extra
+import Ray
 
 main :: IO ()
 main = putStrLn "Hello Modelo"
