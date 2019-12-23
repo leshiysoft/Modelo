@@ -1,8 +1,8 @@
 module Ray
   (Ray
   ,ray
-  ,start
-  ,direction) where
+  ,rayStart
+  ,rayDirection) where
 
 import Position
 import Vector
@@ -18,8 +18,8 @@ ray p v
 
 -- properties
 
-start :: Ray -> Position
-start (Ray p _) = p
+rayStart :: Ray -> Position
+rayStart (Ray p _) = p
 
-direction :: Ray -> Vector
-direction (Ray _ v) = v
+rayDirection :: Ray -> Vector
+rayDirection (Ray _ v) = v
