@@ -1,5 +1,6 @@
 module Main where
 
+import Position
 import Vector
 import Section
 import Sphere
@@ -8,8 +9,12 @@ import Extra
 import Ray
 import Line
 import Object
+import SphereSurface
 
 main :: IO ()
-main = putStrLn "Hello Modelo"
-
-p = sphere (1,2,3) 2
+main = do
+  (Just s) <- return $ sphere origin 1
+  ss <- return $ SphereSurfaceTri s (Vector (1,0,0)) (Vector (0,1,0)) (Vector (0,0,1))
+  mss <- return $ quad ss
+  writeFile "f1.obj" $ makeObj $ mergeObjects $ map toObject mss
+  -- putStrLn $ makeObj $ mergeObjects $ map toObject mss

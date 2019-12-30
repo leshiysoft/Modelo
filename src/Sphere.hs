@@ -5,7 +5,8 @@ module Sphere
   ,sphereEdgeEdge
   ,sphereCenter
   ,sphereRadius
-  ,middle) where
+  ,middle
+  ,spherePoint) where
 
 import Position
 import Vector
@@ -43,3 +44,11 @@ sphereRadius (Sphere _ r) = r
 
 instance Shape Sphere where
   middle (Sphere c _) = c
+
+-- functions
+
+spherePoint :: Sphere -> Vector -> Maybe(Position)
+spherePoint (Sphere c r) v = do
+  pv <- normalizeTo r v
+  (Vector p) <- return $ plus (vector c) pv
+  return p
