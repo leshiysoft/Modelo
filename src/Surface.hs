@@ -24,15 +24,16 @@ data Segment surf = Segment surf [(Position, CurveOnSurf surf)]
 
 
 class Surface surf where
-  discrete :: Int -> (CurveOnSurf surf) -> [Position]
+  path :: CurveOnSurf surf -> (Double -> Position)
 
 -- instances
 
 instance Surface Sphere where
-  discrete 0 _ = []
-  discrete 1 (CurvePP p1 p2 sph) = [p]
+  path (CurvePP p1 p2 sph) p = move rvec center
     where
       center = sphereCenter sph
-      v1 = vectorBeginEnd center p1
-      v2 = vectorBeginEnd center p2
-      (Just p) = spherePoint sph $ plus v1 v2
+      (Just a) = normalize $ vectorBeginEnd center p1
+      (Just b) = normalize $ vectorBeginEnd center p2
+      (Just c) = normalize $ cross (cross a b) a
+      alpha = acos (dot a b) * p
+      rvec = plus (times (sin alpha) c) (times (cos alpha) a)

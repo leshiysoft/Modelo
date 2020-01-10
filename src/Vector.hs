@@ -15,6 +15,9 @@ vectorBeginEnd p1 p2 = plus (Vector p2) $ inv (Vector p1)
 
 -- functions
 
+move :: Vector -> Position -> Position
+move v p = vectorPosition $ plus v $ vector p
+
 nonEmptyVector :: Vector -> Maybe Vector
 nonEmptyVector (Vector p)
   | p == origin = Nothing
