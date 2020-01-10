@@ -11,11 +11,11 @@ data CurveOnSurf surf where
 
 -- properties
 
-surfOf :: CurveOnSurf surf -> surf
-surfOf (CurvePP _ _ s) = s
+surfOfCurve :: CurveOnSurf surf -> surf
+surfOfCurve (CurvePP _ _ s) = s
 
-scopeOf :: CurveOnSurf surf -> (Position, Position)
-scopeOf (CurvePP s e _) = (s, e)
+scopeOfCurve :: CurveOnSurf surf -> (Position, Position)
+scopeOfCurve (CurvePP s e _) = (s, e)
 
 
 
@@ -28,15 +28,25 @@ mesh n (Segment surf curves)
       curveLeft = curves !! 0
       curveRight = reverseCurve (curves !! 2)
       ps = [fromIntegral x / fromIntegral n | x <- [1..(n-1)]]
-      fronts = [path (reverseCurve (curves !! 3)) p | p <- ps]
+      fronts = [path (curves !! 3) p | p <- reverse ps]
       backs = [path (curves !! 1) p | p <- ps]
       otherCurves = zipWith (\f b -> CurvePP f b surf) fronts backs
       allCurves = [curveLeft] ++ otherCurves ++ [curveRight]
       meshPoints = [path c p | c <- allCurves, p <- [0] ++ ps ++ [1]]
       facesCoords = [ (x,y) | x <- [0..(n-1)], y <- [0..(n-1)]]
       faces = [ [x+1+y*(n+1),x+2+y*(n+1),x+2+(y+1)*(n+1),x+1+(y+1)*(n+1)] | (x,y) <- facesCoords]
-  -- | length dcs == 3 = if (mod n 2 == 0) then res else []
-  --  where
+  -- | length curves == 3 = if (mod n 2 == 0) then res else []
+  --   where
+  --     curveLeft = reverseCurve (curves !! 2)
+  --     curveRight = curves !! 0
+  --     curveBottom = curves !! 1
+  --     (topPoint, _) = scopeOfCurve curveRight
+  --     bottomPoint = path curveBottom 0.5
+  --     middlePoint = path (CurvePP bottomPoint topPoint surf) 0.5
+  --     rightPoint = path curveRight 0.5
+  --     leftPoint = path curveLeft 0.5
+      
+
 
 
 
@@ -44,8 +54,6 @@ class Surface surf where
   path :: CurveOnSurf surf -> (Double -> Position)
   reverseCurve :: CurveOnSurf surf -> CurveOnSurf surf
   reverseCurve (CurvePP p1 p2 surf) = CurvePP p2 p1 surf
---  partCurve :: Position -> Position -> CurveOnSurf surf -> CurveOnSurf surf
---  partCurve p1 p2 (CurvePP _ _ surf) = CurvePP p1 p2 surf
 
 -- instances
 
