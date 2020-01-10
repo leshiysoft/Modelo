@@ -12,8 +12,11 @@ data Object = Object
 makeObj :: Object -> String
 makeObj (Object vxs fs) = vpart ++ fpart
   where
-    vpart = concat $ map (\(x,y,z) -> intercalate " " ["v", show x, show y, show z, "\n"] ) vxs
+    vpart = concat $ map (\(x,y,z) -> intercalate " " ["v", dtos x, dtos y, dtos z, "\n"] ) vxs
     fpart = concat $ map (\f -> "f " ++ intercalate " " (map show f) ++ "\n") fs
+
+dtos :: Double -> String
+dtos d = show ((/100000) $ fromIntegral $ round (d * 100000))
 
 mergeObjects :: [Object] -> Object
 mergeObjects [] = Object [] []
