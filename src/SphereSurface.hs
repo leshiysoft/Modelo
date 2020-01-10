@@ -1,5 +1,7 @@
 module SphereSurface where
 
+-- deprecated module!!!!!!!!!!!!!!!!!!!!!!!!
+
 import Sphere
 import Vector
 import Object

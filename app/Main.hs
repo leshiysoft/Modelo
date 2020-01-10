@@ -10,6 +10,7 @@ import Ray
 import Line
 import Object
 import SphereSurface
+import Surface
 
 main :: IO ()
 main = do
