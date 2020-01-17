@@ -28,4 +28,23 @@ dist (Vector (x,y,z)) = sqrt (x*x+y*y+z*z)
 times :: Value -> Vector -> Vector
 times k v = (Vector (k,k,k)) * v
 
---normalize :: Vector -> Maybe (Vector)
+normalize :: Vector -> (String -> Vector)
+normalize vec err = times (recip nnlen) vec
+  where
+    len = dist vec
+    nnlen = value $ nnvalue len err
+
+-- TODO: normalizeNN :: NNVector -> NNVector
+
+cross :: Vector -> Vector -> Vector
+cross (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) =
+  Vector (z1*y2 - y1*z2, x1*z2 - z1*x2, y1*x2 - x1*y2)
+
+dot :: Vector -> Vector -> Value
+dot (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) = x1*x2+y1*y2+z1*z2
+
+mix :: Vector -> Vector -> Vector -> Value
+mix a b c = dot a $ cross b c
+
+nullVector :: Vector
+nullVector = Vector origin

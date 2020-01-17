@@ -1,4 +1,11 @@
-module Value where
+module Value
+  (ParameterList
+  ,Value(Value, Parameter, Relation)
+  ,extract
+  ,NNValue(value)
+  ,nnvalue
+  )
+  where
 
 type ParameterList = [(String, Double)]
 
@@ -58,3 +65,16 @@ extract ((n,v):t) p@(Parameter pn _)
   | pn == n = v
   | otherwise = extract t p
 extract pl (Relation f) = f pl
+
+data NNValue = NNValue {value :: Value}
+  deriving (Eq, Show)
+
+nnvalue :: Value -> (String -> NNValue)
+nnvalue v@(Value d) err
+  | d == 0 = error err
+  | otherwise = NNValue v
+nnvalue v err = NNValue $ Relation f
+  where
+    f pl = let d = extract pl v in case d == 0 of
+      True -> error err
+      _ -> d
