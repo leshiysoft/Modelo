@@ -6,8 +6,6 @@ import Value
 data Vector = Vector {vectorPoint :: Point}
   deriving (Eq, Show)
 
--- TODO: Добавить функции из устаревшего файла Vector.hs
-
 instance Num Vector where
   (+) (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) = Vector (x1+x2,y1+y2,z1+z2)
   (*) (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) = Vector (x1*x2,y1*y2,z1*z2)
@@ -28,13 +26,8 @@ dist (Vector (x,y,z)) = sqrt (x*x+y*y+z*z)
 times :: Value -> Vector -> Vector
 times k v = (Vector (k,k,k)) * v
 
-normalize :: Vector -> (String -> Vector)
-normalize vec err = times (recip nnlen) vec
-  where
-    len = dist vec
-    nnlen = value $ nnvalue len err
-
--- TODO: normalizeNN :: NNVector -> NNVector
+normalize :: Vector -> Vector
+normalize vec = times (recip $ dist vec) vec
 
 cross :: Vector -> Vector -> Vector
 cross (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) =
