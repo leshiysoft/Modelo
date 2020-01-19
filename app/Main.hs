@@ -10,14 +10,16 @@ import Patch
 main :: IO ()
 main = do
   theLines <- return [theLeft, theRight, theStart, theEnd]
-  theAll <- return (theLines ++ middles)
-  str <- return $ makeObj $ mergeObjects $ map (\b -> bezierToObject b 100) theAll
-  writeFile "f1.obj" str
+  carcas <- return $ map (\b -> bezierToObject b 100) theLines
+  str1 <- return $ makeObj $ mergeObjects carcas
+  writeFile "f1.obj" str1
+  str2 <- return $ makeObj $ patchToObject thePatch (10,10)
+  writeFile "f2.obj" str2
   putStrLn "I'm Modelo"
 
 
-theLeft = Bezier ((-1,0,0), Vector (-1,0,0)) ((-1,0,5), Vector (-1,0,0))
-theRight = Bezier ((1,0,0), Vector (0,0,1)) ((1,0,5), Vector (0,0,-1))
+theLeft = Bezier ((-1,0,0), Vector (-1,0,1)) ((-1,0,5), Vector (-1,0,-1))
+theRight = Bezier ((1,0,0), Vector (-1,0,1)) ((1,0,5), Vector (-1,0,-1))
 theStart = Bezier ((-1,0,0), Vector (0,1,0)) ((1,0,0), Vector (0,1,0))
 theEnd = Bezier ((-1,0,5), Vector (0,1,0)) ((1,0,5), Vector (0,1,0))
 

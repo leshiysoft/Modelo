@@ -4,6 +4,7 @@ import Bezier
 import Vector
 import Value
 import Point
+import Object
 
 data Patch = Patch
   {leftPath :: Bezier
@@ -53,3 +54,16 @@ patchBezier p fp = theBezier
     p1 = times xp1 xVec + times yp1 yVec + times zp1 zVec + centerCurrent
     p2 = times xp2 xVec + times yp2 yVec + times zp2 zVec + centerCurrent
     theBezier = Bezier (pos0,p1 - Vector pos0) (pos1, p2 - Vector pos1)
+
+patchToObject :: Patch -> (Int, Int) -> Object
+patchToObject p (fc, rc) = Object vtx faces []
+  where
+    coords = [(z,x) | x <- [0..rc], z <- [0..fc]]
+    facesCoords = [(z,x) | x <- [0..rc-1], z <- [0..fc-1]]
+    rDist = fromIntegral rc
+    fDist = fromIntegral fc
+    coordValues = map cvf coords
+    cvf (z,x) = (fromIntegral z / fDist, fromIntegral x / rDist)
+    vtx = map (\(fp,rp) -> bezierPoint (patchBezier p fp) rp) coordValues
+    faces = map fs facesCoords
+    fs (z,x) = [x*(fc+1)+z+1,x*(fc+1)+z+2,(x+1)*(fc+1)+z+2,(x+1)*(fc+1)+z+1]
