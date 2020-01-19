@@ -44,3 +44,20 @@ mix a b c = dot a $ cross b c
 
 nullVector :: Vector
 nullVector = Vector origin
+
+det :: Point -> Point -> Point -> Value
+det (a11, a12,a13) (a21, a22,a23) (a31, a32,a33) =
+  a11*a22*a33 - a11*a23*a32 - a12*a21*a33 + a12*a23*a31 + a13*a21*a32 - a13*a22*a31
+
+toBasis :: (Vector, Vector, Vector) -> Vector -> Vector
+toBasis (x, y, z) p = result
+  where 
+    (x1,x2,x3) = vectorPoint x
+    (y1,y2,y3) = vectorPoint y
+    (z1,z2,z3) = vectorPoint z
+    (p1,p2,p3) = vectorPoint p
+    d = det (x1,y1,z1) (x2,y2,z2) (x3,y3,z3)
+    d1 = det (p1,y1,z1) (p2,y2,z2) (p3,y3,z3)
+    d2 = det (x1,p1,z1) (x2,p2,z2) (x3,p3,z3)
+    d3 = det (x1,y1,p1) (x2,y2,p2) (x3,y3,p3)
+    result = Vector (d1/d,d2/d,d3/d)
