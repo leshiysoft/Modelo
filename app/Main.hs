@@ -6,10 +6,12 @@ import Vector
 import Bezier
 import Object
 import Patch
+import Arc
+import Sphere
 
 main :: IO ()
 main = do
-  theLines <- return [theLeft, theRight, theStart, theEnd]
+  theLines <- return [theArc] -- [theLeft, theRight, theStart, theEnd]
   carcas <- return $ map (\b -> bezierToObject b 100) theLines
   str1 <- return $ makeObj $ mergeObjects carcas
   writeFile "f1.obj" str1
@@ -36,3 +38,7 @@ middles = map (patchBezier thePatch) $ map (\v -> fromIntegral v / 100) [1..99]
   where
     pt = Patch theLeft theRight
       ( Vector (0,1,0), Vector (0,1,0)) ( Vector (0,3,0), Vector (0,3,0))
+
+
+theArc :: Bezier
+theArc = arcToBezier $ Arc (Sphere (0,0,0) 10) (Vector (0,0,1)) (Vector (1,0,0))
