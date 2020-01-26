@@ -13,6 +13,12 @@ data Patch = Patch
   ,endTangents :: (Vector, Vector)
   }
 
+beziersToPatch :: Bezier -> Bezier -> Bezier -> Bezier -> Patch
+beziersToPatch lb rb sb eb = Patch lb rb (st1,st2) (et1,et2)
+  where
+    Bezier (_,st1) (_,st2) = sb
+    Bezier (_,et1) (_,et2) = eb
+
 patchPoint :: Patch -> Value -> Value -> Point
 patchPoint p fp rp = bezierPoint theBezier rp
   where
@@ -55,8 +61,8 @@ patchBezier p fp = theBezier
     p2 = times xp2 xVec + times yp2 yVec + times zp2 zVec + centerCurrent
     theBezier = Bezier (pos0,p1 - Vector pos0) (pos1, p2 - Vector pos1)
 
-patchToObject :: Patch -> (Int, Int) -> Object
-patchToObject p (fc, rc) = Object vtx faces []
+patchToObject :: (Int,Int) -> Patch -> Object
+patchToObject (fc, rc) p = Object vtx faces []
   where
     coords = [(z,x) | x <- [0..rc], z <- [0..fc]]
     facesCoords = [(z,x) | x <- [0..rc-1], z <- [0..fc-1]]

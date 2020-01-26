@@ -8,14 +8,24 @@ import Object
 import Patch
 import Arc
 import Sphere
+import Models.Bolt
 
-main :: IO ()
+main :: IO()
 main = do
+  theObject <- return $ mergeObjects $ map (patchToObject (4,4)) bolt
+  boltStr <- return $ makeObj theObject
+  writeFile "bolt.obj" boltStr
+  putStrLn "Bolt"
+
+
+
+main2 :: IO ()
+main2 = do
   theLines <- return [theArc] -- [theLeft, theRight, theStart, theEnd]
   carcas <- return $ map (\b -> bezierToObject b 100) theLines
   str1 <- return $ makeObj $ mergeObjects carcas
   writeFile "f1.obj" str1
-  str2 <- return $ makeObj $ patchToObject thePatch (10,10)
+  str2 <- return $ makeObj $ patchToObject (10,10) thePatch
   writeFile "f2.obj" str2
   putStrLn "I'm Modelo"
 

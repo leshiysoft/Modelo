@@ -7,6 +7,8 @@ import Object
 
 data Bezier = Bezier (Point, Vector) (Point, Vector)
 
+-- TODO: извлекать вектора-тангенты
+
 bezierControls :: Bezier -> (Point, Point, Point, Point)
 bezierControls (Bezier (pos1, v1) (pos2, v2)) = (p0,p1,p2,p3)
   where
