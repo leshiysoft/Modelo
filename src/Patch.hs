@@ -9,17 +9,15 @@ import Object
 data Patch = Patch
   {leftPath :: Bezier
   ,rightPath :: Bezier
-  -- ,startBezier :: Bezier
-  -- ,endBezier :: Bezier
-  ,startTangents :: (Vector, Vector)
-  ,endTangents :: (Vector, Vector)
+  ,startBezier :: Bezier
+  ,endBezier :: Bezier
   }
 
-beziersToPatch :: Bezier -> Bezier -> Bezier -> Bezier -> Patch
-beziersToPatch lb rb sb eb = Patch lb rb (st1,st2) (et1,et2)
-  where
-    Bezier (_,st1) (_,st2) = sb
-    Bezier (_,et1) (_,et2) = eb
+-- beziersToPatch :: Bezier -> Bezier -> Bezier -> Bezier -> Patch
+-- beziersToPatch lb rb sb eb = Patch lb rb (st1,st2) (et1,et2)
+--   where
+--     Bezier (_,st1) (_,st2) = sb
+--     Bezier (_,et1) (_,et2) = eb
 
 patchPoint :: Patch -> Value -> Value -> Point
 patchPoint p fp rp = bezierPoint theBezier rp
@@ -41,8 +39,8 @@ patchBezier p fp = theBezier
     zVec2 = normalize $ times 0.5 (leftDir 1 + rightDir 1)
     xVec2 = times 0.5 (Vector rp3 - Vector lp3)
     yVec2 = normalize $ cross xVec2 zVec2
-    (sTan1, sTan2) = startTangents p
-    (eTan1, eTan2) = endTangents p
+    (sTan1, sTan2) = bezierTangents $ startBezier p
+    (eTan1, eTan2) = bezierTangents $ endBezier p
     sBasis = toBasis (xVec1, yVec1, zVec1)
     eBasis = toBasis (xVec2, yVec2, zVec2)
     sc1 = sBasis (Vector lp0 + sTan1 - centerStart)
@@ -53,10 +51,10 @@ patchBezier p fp = theBezier
     (xp1,yp1,zp1) = vectorPoint (times (1-fp) sc1 + times fp ec1)
     (xp2,yp2,zp2) = vectorPoint (times (1-fp) sc2 + times fp ec2)
     pos1 = bezierPoint (rightPath p) fp
-    leftPoint = bezierPoint (leftPath p) fp
-    rightPoint = bezierPoint (rightPath p) fp
+    --leftPoint = bezierPoint (leftPath p) fp
+    --rightPoint = bezierPoint (rightPath p) fp
     zVec = normalize $ times 0.5 (leftDir fp + rightDir fp)
-    xVec = times 0.5 (Vector rightPoint - Vector leftPoint)
+    xVec = times 0.5 (Vector pos1 - Vector pos0)
     yVec = normalize $ cross xVec zVec
     centerCurrent = times 0.5 (Vector pos0 + Vector pos1)
     p1 = times xp1 xVec + times yp1 yVec + times zp1 zVec + centerCurrent
