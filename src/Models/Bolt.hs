@@ -30,7 +30,7 @@ bolt = [pat1, pat2, pat3, pat4] ++ headSides ++ headBottoms ++ screwSides
     vec6 = [va,vb,vc,vd,ve,vf]
     [a,b,c,d,e,f] = map (spherePoint s4) vec6
     pat1 = faceToPatch (a,d,e,f)
-    pat2 = faceToPatch (a,b,c,d)
+    pat2 = faceToPatch (d,a,b,c)
     headVector = Vector (0, -headHeight, 0)
     [a1,b1,c1,d1,e1,f1] = map (move headVector) [a,b,c,d,e,f]
     headSides = map faceToPatch
@@ -49,7 +49,7 @@ bolt = [pat1, pat2, pat3, pat4] ++ headSides ++ headBottoms ++ screwSides
     btp2 = \(a,b,c,d) -> Patch (toBezier a) (toBezier b)
       (toBezier c) (toBezier d)
     screwSides = map btp2 $ zip4 (cycle vertSecs) (tail $ cycle vertSecs)
-      arcs1 arcs2
+      arcs2 arcs1
     pat3 = Patch (arcBezier s1 vf va) (arcBezier s1 ve vd)
       (arcBezier s1 vf ve) (sectionBezier a3 d3)
     pat4 = Patch (arcBezier s1 vc vd) (arcBezier s1 vb va)

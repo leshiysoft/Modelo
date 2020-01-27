@@ -51,7 +51,7 @@ det (a11, a12,a13) (a21, a22,a23) (a31, a32,a33) =
 
 toBasis :: (Vector, Vector, Vector) -> Vector -> Vector
 toBasis (x, y, z) p = result
-  where 
+  where
     (x1,x2,x3) = vectorPoint x
     (y1,y2,y3) = vectorPoint y
     (z1,z2,z3) = vectorPoint z
@@ -61,3 +61,7 @@ toBasis (x, y, z) p = result
     d2 = det (x1,p1,z1) (x2,p2,z2) (x3,p3,z3)
     d3 = det (x1,y1,p1) (x2,y2,p2) (x3,y3,p3)
     result = Vector (d1/d,d2/d,d3/d)
+
+fromBasis :: (Vector, Vector, Vector) -> Vector -> Vector
+fromBasis (x,y,z) (Vector (a,b,c)) =
+  times a x + times b y + times c z 
