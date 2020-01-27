@@ -22,7 +22,7 @@ main = do
 main2 :: IO ()
 main2 = do
   theLines <- return [theArc] -- [theLeft, theRight, theStart, theEnd]
-  carcas <- return $ map (\b -> bezierToObject b 100) theLines
+  carcas <- return $ map (\b -> bezierToObject 100 b) theLines
   str1 <- return $ makeObj $ mergeObjects carcas
   writeFile "f1.obj" str1
   str2 <- return $ makeObj $ patchToObject (10,10) thePatch

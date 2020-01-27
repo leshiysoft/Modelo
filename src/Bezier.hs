@@ -9,6 +9,9 @@ data Bezier = Bezier (Point, Vector) (Point, Vector)
 
 -- TODO: извлекать вектора-тангенты
 
+bezierTangents :: Bezier -> (Vector, Vector)
+bezierTangents (Bezier (_, v1) (_, v2)) = (v1,v2)
+
 bezierControls :: Bezier -> (Point, Point, Point, Point)
 bezierControls (Bezier (pos1, v1) (pos2, v2)) = (p0,p1,p2,p3)
   where
@@ -42,9 +45,12 @@ bezierDirection bez t = vp
     s3 = times (3*t^2) p3
     vp = foldr (+) nullVector [s0,s1,s2,s3]
 
-bezierToObject :: Bezier -> Int -> Object
-bezierToObject b i = Object vtx [] ls
+bezierToObject :: Int -> Bezier -> Object
+bezierToObject i b = Object vtx [] ls
     where
       toPoint ind = bezierPoint b (Value ind/fromIntegral i)
       vtx = map toPoint [0..fromIntegral i]
       ls = zip [1..fromIntegral i] [2..(fromIntegral i+1)]
+
+class Spline s where
+  toBezier :: s -> Bezier

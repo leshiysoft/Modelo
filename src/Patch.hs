@@ -9,6 +9,8 @@ import Object
 data Patch = Patch
   {leftPath :: Bezier
   ,rightPath :: Bezier
+  -- ,startBezier :: Bezier
+  -- ,endBezier :: Bezier
   ,startTangents :: (Vector, Vector)
   ,endTangents :: (Vector, Vector)
   }
