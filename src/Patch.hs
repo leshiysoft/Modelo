@@ -5,6 +5,7 @@ import Vector
 import Value
 import Point
 import Object
+import Shape
 
 data Patch = Patch
   {leftPath :: Bezier
@@ -59,3 +60,11 @@ patchToObject (fc, rc) p = Object vtx faces []
     vtx = map (\(fp,rp) -> bezierPoint (patchBezier p fp) rp) coordValues
     faces = map fs facesCoords
     fs (z,x) = [x*(fc+1)+z+1,x*(fc+1)+z+2,(x+1)*(fc+1)+z+2,(x+1)*(fc+1)+z+1]
+
+instance Shape Patch where
+  move v (Patch l r s e) = Patch l' r' s' e'
+    where
+      l' = move v l
+      r' = move v r
+      s' = move v s
+      e' = move v e

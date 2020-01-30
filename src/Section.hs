@@ -3,6 +3,7 @@ module Section where
 import Point
 import Vector
 import Bezier
+import Shape
 
 data Section = Section {
   sectionStart :: Point,
@@ -27,3 +28,6 @@ instance Spline Section where
       theVec = sectionToVector sec
       v1 = times (1/3) theVec
       v2 = times (1/3) (-theVec)
+
+instance Shape Section where
+  move v (Section s e) = Section (move v s) (move v e)

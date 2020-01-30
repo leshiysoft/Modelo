@@ -4,6 +4,7 @@ import Point
 import Vector
 import Value
 import Object
+import Shape
 
 data Bezier = Bezier (Point, Vector) (Point, Vector)
 
@@ -57,3 +58,6 @@ invertBezier (Bezier a b) = Bezier b a
 
 class Spline s where
   toBezier :: s -> Bezier
+
+instance Shape Bezier where
+  move v (Bezier (p1, v1) (p2, v2)) = (Bezier (move v p1, v1) (move v p2, v2))

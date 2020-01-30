@@ -17,9 +17,6 @@ instance Num Vector where
 vectorBeginEnd :: Point -> Point -> Vector
 vectorBeginEnd p1 p2 = Vector p2 - Vector p1
 
-move :: Vector -> Point -> Point
-move v p = vectorPoint (v + Vector p)
-
 dist :: Vector -> Value
 dist (Vector (x,y,z)) = sqrt (x*x+y*y+z*z)
 
@@ -83,23 +80,3 @@ right = Vector (1,0,0)
 
 left :: Vector
 left = Vector (-1,0,0)
-
--- TODO: пренести move в метод класса shape
-
-moveForward :: Value -> Point -> Point
-moveForward v p = move (times v forward) p
-
-moveBackward :: Value -> Point -> Point
-moveBackward v p = move (times v backward) p
-
-moveUp :: Value -> Point -> Point
-moveUp v p = move (times v up) p
-
-moveDown :: Value -> Point -> Point
-moveDown v p = move (times v down) p
-
-moveRight :: Value -> Point -> Point
-moveRight v p = move (times v right) p
-
-moveLeft :: Value -> Point -> Point
-moveLeft v p = move (times v left) p

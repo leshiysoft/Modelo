@@ -5,6 +5,7 @@ import Value
 import Vector
 import Section
 import Combinations
+import Shape
 
 data Sphere = Sphere
   {sphereCenter :: Point
@@ -47,3 +48,6 @@ radialPoints' s n r i = map (spherePoint s) $ radialVectors' n r i
 
 radialSections :: Sphere -> Vector -> Vector -> Int -> [Section]
 radialSections s n r i = byPairs Section (radialPoints' s n r i)
+
+instance Shape Sphere where
+  move v (Sphere c r) = Sphere (move v c) r

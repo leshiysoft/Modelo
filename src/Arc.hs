@@ -5,6 +5,7 @@ import Sphere
 import Point
 import Bezier
 import Combinations
+import Shape
 
 data Arc = Arc Sphere Vector Vector
   deriving (Eq, Show)
@@ -38,3 +39,6 @@ instance Spline Arc where
 
 radialArcs :: Sphere -> Vector -> Vector -> Int -> [Arc]
 radialArcs s n r i = byPairs (Arc s) (radialVectors' n r i)
+
+instance Shape Arc where
+  move v (Arc s a b) = Arc (move v s) a b

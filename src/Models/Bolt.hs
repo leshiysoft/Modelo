@@ -8,6 +8,7 @@ import Point
 import Bezier
 import Arc
 import Combinations
+import Shape
 import Data.List
 
 bolt :: [Patch]
@@ -25,9 +26,9 @@ bolt = pat1 : pat2 : pat3 : pat4 : patches
     ps4 = map (moveUp headHeight) ps3
     paths = byPairs (zipWith sectionBezier) [ps1, ps2, ps3, ps4]
     se1 = map toBezier $ radialArcs (Sphere origin screwRadius) up forward 6
-    se2 = map toBezier $ radialArcs (Sphere (0,screwHeight,0) screwRadius) up forward 6     --TODO: методом moveUp класса Shape
+    se2 = map (moveUp screwHeight) se1
     se3 = map toBezier $ radialSections (Sphere (0,screwHeight,0) headRadius) up forward 6
-    se4 = map toBezier $ radialSections (Sphere (0,totalHeight,0) headRadius) up forward 6   --TODO: методом moveUp класса Shape
+    se4 = map (moveUp headHeight) se3
     plrs = concat $ map (byPairs Patch) paths
     beziers = concat $ byPairs zip [se1, se2, se3, se4]
     patches = zipWith ($) (map uncurry plrs) beziers
