@@ -32,12 +32,12 @@ bolt = pat1 : pat2 : pat3 : pat4 : patches
     beziers = concat $ byPairs zip [se1, se2, se3, se4]
     patches = zipWith ($) (map uncurry plrs) beziers
     [a,b,c,d,e,f,_] = ps4
-    pat1 = faceToPatch a b c d
-    pat2 = faceToPatch d e f a    --TODO: патчинг полигонов
+    pat1 = faceToPatch d c b a
+    pat2 = faceToPatch a f e d    --TODO: патчинг полигонов
     [a1,a2,a3,a4,a5,a6] = se1
     [ap,_,_,dp,_,_,_] = ps1
-    pat3 = Patch (invertBezier a1) a3 a2 (sectionBezier ap dp)
-    pat4 = Patch (invertBezier a4) a6 a5 (sectionBezier dp ap) --TODO: патчинг окружностей
+    pat3 = Patch a1 (invertBezier a3) (sectionBezier ap dp) a2
+    pat4 = Patch a4 (invertBezier a6) (sectionBezier dp ap) a5 --TODO: патчинг окружностей
 
 faceToPatch :: Point -> Point -> Point -> Point -> Patch
 faceToPatch t1 t2 t3 t4 = Patch b1 b2 b3 b4
