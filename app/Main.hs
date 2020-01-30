@@ -4,7 +4,7 @@ import Value
 import Point
 import Vector
 import Bezier
-import Object
+import Mesh
 import Patch
 import Arc
 import Sphere
@@ -12,7 +12,5 @@ import Models.Bolt
 
 main :: IO()
 main = do
-  theObject <- return $ mergeObjects $ map (patchToObject (4,4)) bolt
-  boltStr <- return $ makeObj theObject
-  writeFile "bolt.obj" boltStr
+  exportMeshtoObj "bolt.obj" bolt
   putStrLn "Bolt"

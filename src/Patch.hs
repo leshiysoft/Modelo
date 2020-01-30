@@ -4,7 +4,7 @@ import Bezier
 import Vector
 import Value
 import Point
-import Object
+import Mesh
 import Shape
 
 data Patch = Patch
@@ -48,8 +48,8 @@ patchBezier p fp = theBezier
     p2 = fromBasis sysCurrent sc2Current + centerCurrent
     theBezier = Bezier (pos0, p1 - Vector pos0) (pos1, p2 - Vector pos1)
 
-patchToObject :: (Int,Int) -> Patch -> Object
-patchToObject (fc, rc) p = Object vtx faces []
+patchToMesh :: (Int,Int) -> Patch -> Mesh
+patchToMesh (fc, rc) p = Mesh vtx faces []
   where
     coords = [(z,x) | x <- [0..rc], z <- [0..fc]]
     facesCoords = [(z,x) | x <- [0..rc-1], z <- [0..fc-1]]

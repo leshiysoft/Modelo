@@ -3,7 +3,7 @@ module Bezier where
 import Point
 import Vector
 import Value
-import Object
+import Mesh
 import Shape
 
 data Bezier = Bezier (Point, Vector) (Point, Vector)
@@ -46,8 +46,8 @@ bezierDirection bez t = vp
     s3 = times (3*t^2) p3
     vp = foldr (+) nullVector [s0,s1,s2,s3]
 
-bezierToObject :: Int -> Bezier -> Object
-bezierToObject i b = Object vtx [] ls
+bezierToMesh :: Int -> Bezier -> Mesh
+bezierToMesh i b = Mesh vtx [] ls
     where
       toPoint ind = bezierPoint b (Value ind/fromIntegral i)
       vtx = map toPoint [0..fromIntegral i]

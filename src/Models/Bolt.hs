@@ -9,10 +9,11 @@ import Bezier
 import Arc
 import Combinations
 import Shape
+import Mesh
 import Data.List
 
-bolt :: [Patch]
-bolt = pat1 : pat2 : pat3 : pat4 : patches
+bolt :: Mesh
+bolt = mergeMeshes $ map (patchToMesh (4,4)) $ pat1:pat2:pat3:pat4:patches
   where
     headHeight = 1
     headRadius = 3

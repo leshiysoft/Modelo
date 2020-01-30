@@ -5,4 +5,4 @@ import Value
 type Point = (Value, Value, Value)
 
 origin :: Point
-origin  = point (0,0,0)
+origin  = (0,0,0)
