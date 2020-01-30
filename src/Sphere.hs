@@ -23,3 +23,14 @@ spherePoint :: Sphere -> Vector -> Point
 spherePoint (Sphere c r) v = vectorPoint (Vector c + pv)
   where
     pv = normalizeTo r v
+
+radialVectors :: Vector -> Vector -> Int -> [Vector]
+radialVectors n r i = map vector angles
+  where
+    zVector = normalize $ cross r n
+    refVector = normalize $ cross n zVector
+    angles = [ 2*pi*j/(fromIntegral i)  | j <- map fromIntegral [0..i-1]]
+    vector a = times (sin a) refVector  + times (cos a) zVector
+
+radialPoints :: Sphere -> Vector -> Vector -> Int -> [Point]
+radialPoints s n r i = map (spherePoint s) $ radialVectors n r i
