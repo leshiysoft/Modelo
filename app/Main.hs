@@ -12,5 +12,5 @@ import Models.Bolt
 
 main :: IO()
 main = do
-  exportMeshtoObj "bolt.obj" bolt
+  exportMeshToObj [] "bolt.obj" $ removeDoubles [] 0.001 bolt
   putStrLn "Bolt"
