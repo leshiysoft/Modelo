@@ -64,4 +64,42 @@ toBasis (x, y, z) p = result
 
 fromBasis :: (Vector, Vector, Vector) -> Vector -> Vector
 fromBasis (x,y,z) (Vector (a,b,c)) =
-  times a x + times b y + times c z 
+  times a x + times b y + times c z
+
+forward :: Vector
+forward = Vector (0,0,1)
+
+backward :: Vector
+backward = Vector (0,0,-1)
+
+up :: Vector
+up = Vector (0,1,0)
+
+down :: Vector
+down = Vector (0,-1,0)
+
+right :: Vector
+right = Vector (1,0,0)
+
+left :: Vector
+left = Vector (-1,0,0)
+
+-- TODO: пренести move в метод класса shape
+
+moveForward :: Value -> Point -> Point
+moveForward v p = move (times v forward) p
+
+moveBackward :: Value -> Point -> Point
+moveBackward v p = move (times v backward) p
+
+moveUp :: Value -> Point -> Point
+moveUp v p = move (times v up) p
+
+moveDown :: Value -> Point -> Point
+moveDown v p = move (times v down) p
+
+moveRight :: Value -> Point -> Point
+moveRight v p = move (times v right) p
+
+moveLeft :: Value -> Point -> Point
+moveLeft v p = move (times v left) p

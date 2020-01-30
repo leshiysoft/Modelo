@@ -3,6 +3,8 @@ module Sphere where
 import Point
 import Value
 import Vector
+import Section
+import Combinations
 
 data Sphere = Sphere
   {sphereCenter :: Point
@@ -32,5 +34,16 @@ radialVectors n r i = map vector angles
     angles = [ 2*pi*j/(fromIntegral i)  | j <- map fromIntegral [0..i-1]]
     vector a = times (sin a) refVector  + times (cos a) zVector
 
+radialVectors' :: Vector -> Vector -> Int -> [Vector]
+radialVectors' n r i = vs ++ [head vs]
+  where
+    vs = radialVectors n r i
+
 radialPoints :: Sphere -> Vector -> Vector -> Int -> [Point]
 radialPoints s n r i = map (spherePoint s) $ radialVectors n r i
+
+radialPoints' :: Sphere -> Vector -> Vector -> Int -> [Point]
+radialPoints' s n r i = map (spherePoint s) $ radialVectors' n r i
+
+radialSections :: Sphere -> Vector -> Vector -> Int -> [Section]
+radialSections s n r i = byPairs Section (radialPoints' s n r i)

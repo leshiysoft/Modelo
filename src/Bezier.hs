@@ -52,5 +52,8 @@ bezierToObject i b = Object vtx [] ls
       vtx = map toPoint [0..fromIntegral i]
       ls = zip [1..fromIntegral i] [2..(fromIntegral i+1)]
 
+invertBezier :: Bezier -> Bezier
+invertBezier (Bezier a b) = Bezier b a
+
 class Spline s where
   toBezier :: s -> Bezier

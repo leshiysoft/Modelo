@@ -4,6 +4,7 @@ import Vector
 import Sphere
 import Point
 import Bezier
+import Combinations
 
 data Arc = Arc Sphere Vector Vector
   deriving (Eq, Show)
@@ -34,3 +35,6 @@ instance Spline Arc where
       theDist = dist (m - times 0.5 (a1 + a2)) / k
       c1 = times theDist cn1
       c2 = times theDist cn2
+
+radialArcs :: Sphere -> Vector -> Vector -> Int -> [Arc]
+radialArcs s n r i = byPairs (Arc s) (radialVectors' n r i)
