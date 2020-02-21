@@ -1,6 +1,6 @@
 module Patch where
 
-import Bezier
+import Curve
 import Vector
 import Value
 import Point
@@ -8,45 +8,41 @@ import Mesh
 import Shape
 
 data Patch = Patch
-  {leftPath :: Bezier
-  ,rightPath :: Bezier
-  ,startBezier :: Bezier
-  ,endBezier :: Bezier
+  {leftPath :: Curve
+  ,rightPath :: Curve
+  ,startCurve :: Curve
+  ,endCurve :: Curve
   }
 
-patchPoint :: Patch -> Value -> Value -> Point
-patchPoint p fp rp = bezierPoint theBezier rp
-  where
-    theBezier = patchBezier p fp
+instance Shape Patch where
+  move v (Patch l r s e) = Patch l' r' s' e'
+    where
+      l' = move v l
+      r' = move v r
+      s' = move v s
+      e' = move v e
 
-patchBezier :: Patch -> Value -> Bezier
-patchBezier p fp = theBezier
+patchPoint :: Patch -> Value -> Value -> Point
+patchPoint p fp rp = vectorPoint currentP
   where
-    leftPoint = bezierPoint (leftPath p)
-    rightPoint = bezierPoint (rightPath p)
-    leftDir = bezierDirection (leftPath p)
-    rightDir = bezierDirection (rightPath p)
-    pathCenter x = ((xN,yN,zN),pN) where
-      zN = normalize $ times 0.5 (leftDir x + rightDir x)
+    leftPoint = curveFunction (leftPath p)
+    rightPoint = curveFunction (rightPath p)
+    leftDir = curveDirection (leftPath p)
+    rightDir = curveDirection (rightPath p)
+    system x = ((xN,yN,zN),pN) where
+      zN = normalize (leftDir x + rightDir x)
       xN = times 0.5 (Vector (rightPoint x) - Vector (leftPoint x))
       yN = normalize $ cross xN zN
       pN = times 0.5 (Vector (leftPoint x) + Vector (rightPoint x))
-    (sysStart,centerStart) = pathCenter 0
-    (sysCurrent,centerCurrent) = pathCenter fp
-    (sysEnd,centerEnd) = pathCenter 1
-    (_,sc1',sc2',_) = bezierControlsAsVectors $ startBezier p
-    (_,ec1',ec2',_) = bezierControlsAsVectors $ endBezier p
-    sc1 = toBasis sysStart (sc1' - centerStart)
-    sc2 = toBasis sysStart (sc2' - centerStart)
-    ec1 = toBasis sysEnd (ec1' - centerEnd)
-    ec2 = toBasis sysEnd (ec2' - centerEnd)
-    pos0 = leftPoint fp
-    pos1 = rightPoint fp
-    sc1Current = times (1-fp) sc1 + times fp ec1
-    sc2Current = times (1-fp) sc2 + times fp ec2
-    p1 = fromBasis sysCurrent sc1Current + centerCurrent
-    p2 = fromBasis sysCurrent sc2Current + centerCurrent
-    theBezier = Bezier (pos0, p1 - Vector pos0) (pos1, p2 - Vector pos1)
+    (sysStart,centerStart) = system 0
+    (sysCurrent,centerCurrent) = system fp
+    (sysEnd,centerEnd) = system 1
+    startP = Vector $ curveFunction (startCurve p) rp
+    endP = Vector $ curveFunction (endCurve p) rp
+    startP' = toBasis sysStart (startP - centerStart)
+    endP' = toBasis sysEnd (endP - centerStart)
+    currentP' = times (1-fp) startP' + times fp endP'
+    currentP = fromBasis sysCurrent currentP' + centerCurrent
 
 patchToMesh :: (Int,Int) -> Patch -> Mesh
 patchToMesh (fc, rc) p = Mesh vtx faces []
@@ -57,14 +53,6 @@ patchToMesh (fc, rc) p = Mesh vtx faces []
     fDist = fromIntegral fc
     coordValues = map cvf coords
     cvf (z,x) = (fromIntegral z / fDist, fromIntegral x / rDist)
-    vtx = map (\(fp,rp) -> bezierPoint (patchBezier p fp) rp) coordValues
+    vtx = map (\(fp,rp) -> patchPoint p fp rp) coordValues
     faces = map fs facesCoords
     fs (z,x) = [x*(fc+1)+z+1,x*(fc+1)+z+2,(x+1)*(fc+1)+z+2,(x+1)*(fc+1)+z+1]
-
-instance Shape Patch where
-  move v (Patch l r s e) = Patch l' r' s' e'
-    where
-      l' = move v l
-      r' = move v r
-      s' = move v s
-      e' = move v e

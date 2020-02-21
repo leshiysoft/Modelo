@@ -2,7 +2,7 @@ module Section where
 
 import Point
 import Vector
-import Bezier
+import Curve
 import Shape
 
 data Section = Section {
@@ -19,15 +19,14 @@ sectionMiddle s = vectorPoint $ times 0.5 (vStart + vEnd)
 sectionToVector :: Section -> Vector
 sectionToVector s = vectorBeginEnd (sectionStart s) (sectionEnd s)
 
-sectionBezier :: Point -> Point -> Bezier
-sectionBezier a b = toBezier $ Section a b
-
 instance Spline Section where
-  toBezier sec@(Section s e) = Bezier (s, v1) (e, v2)
+  toCurve (Section p1 p2) = CurveDir cf cd
     where
-      theVec = sectionToVector sec
-      v1 = times (1/3) theVec
-      v2 = times (1/3) (-theVec)
+      cf v = vectorPoint (times (1-v) (Vector p1) + times v (Vector p2))
+      cd v = vectorBeginEnd p1 p2
+
+sectionCurve :: Point -> Point -> Curve
+sectionCurve p1 p2 = toCurve $ Section p1 p2
 
 instance Shape Section where
   move v (Section s e) = Section (move v s) (move v e)
