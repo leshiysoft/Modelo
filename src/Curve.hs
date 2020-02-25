@@ -4,6 +4,7 @@ import Value
 import Point
 import Vector
 import Shape
+import Mesh
 
 data Curve = Curve (Value -> Point)
   | CurveDir (Value -> Point) (Value -> Vector)
@@ -22,6 +23,13 @@ invertCurve (CurveDir cf df) = CurveDir cf' df'
   where
     cf' v = cf (1-v)
     df' v = times (-1) $ df (1-v)
+
+curveToMesh :: Int -> Curve -> Mesh
+curveToMesh i c = Mesh vtx [] ls
+    where
+      toPoint ind = curveFunction c (Value ind/fromIntegral i)
+      vtx = map toPoint [0..fromIntegral i]
+      ls = zip [1..fromIntegral i] [2..(fromIntegral i+1)]
 
 class Spline s where
   toCurve :: s -> Curve
