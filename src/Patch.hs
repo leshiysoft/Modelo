@@ -40,7 +40,7 @@ patchPoint p fp rp = vectorPoint currentP
     startP = Vector $ curveFunction (startCurve p) rp
     endP = Vector $ curveFunction (endCurve p) rp
     startP' = toBasis sysStart (startP - centerStart)
-    endP' = toBasis sysEnd (endP - centerStart)
+    endP' = toBasis sysEnd (endP - centerEnd)
     currentP' = times (1-fp) startP' + times fp endP'
     currentP = fromBasis sysCurrent currentP' + centerCurrent
 
