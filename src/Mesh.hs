@@ -13,7 +13,12 @@ data Mesh = Mesh
   deriving Show
 
 exportMeshToObj :: ParameterList -> String -> Mesh -> IO ()
-exportMeshToObj plist path (Mesh vxs fs ls) = do writeFile path content
+exportMeshToObj plist path mesh  = result
+  where
+    result = exportMeshToObj' plist  path $ removeDoubles plist 0.001 mesh
+
+exportMeshToObj' :: ParameterList -> String -> Mesh -> IO ()
+exportMeshToObj' plist path (Mesh vxs fs ls) = do writeFile path content
   where
     vtos v = show ((/100000) $ fromIntegral $ round (extract plist v * 100000))
     vpart = concat $ map (\(x,y,z) -> intercalate " " ["v", vtos x, vtos y, vtos z, "\n"] ) vxs

@@ -9,7 +9,7 @@ import Models.Spiral
 
 main :: IO()
 main = do
-  exportMeshToObj [] "bolt.obj" $ removeDoubles [] 0.001 bolt
+  exportMeshToObj [] "bolt.obj" bolt
   putStrLn "Bolt"
-  exportMeshToObj [] "spiral1.obj" $ removeDoubles [] 0.001 theSpiral1
+  exportMeshToObj [] "spiral1.obj" theSpiral1
   putStrLn "Spiral1"
