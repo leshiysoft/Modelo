@@ -6,6 +6,7 @@ import Vector
 
 import Data.List
 
+--TODO: наследовать от Shape
 data Mesh = Mesh
   {meshVertexes :: [Point]
   ,meshFaces :: [[Int]]

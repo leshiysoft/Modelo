@@ -5,6 +5,7 @@ import Point
 import Vector
 import Shape
 import Mesh
+import Model
 
 data Curve = Curve (Value -> Point)
   | CurveDir (Value -> Point) (Value -> Vector)
@@ -32,6 +33,9 @@ curveToMesh i c = Mesh vtx [] ls
       toPoint ind = curveFunction c (Value ind/fromIntegral i)
       vtx = map toPoint [0..fromIntegral i]
       ls = zip [1..fromIntegral i] [2..(fromIntegral i+1)]
+
+--TODO: реализовать curveToModel
+-- curveToModel :: Curve -> Model
 
 class Spline s where
   toCurve :: s -> Curve

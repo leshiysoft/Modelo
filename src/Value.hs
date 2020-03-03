@@ -1,5 +1,7 @@
 module Value  where
 
+--TODO: переименовать все по аналогии с Number
+
 type ParameterList = [(String, Double)]
 
 data Value = Value Double
@@ -46,6 +48,8 @@ instance Floating Value where
   acosh = liftValue acosh
   atanh = liftValue atanh
 
+
+--TODO: Сделать один extract для Value и  Number
 extract :: ParameterList -> Value -> Double
 extract _ (Value d) = d
 extract [] (Parameter _ dv) = dv
