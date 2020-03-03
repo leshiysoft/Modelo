@@ -6,11 +6,6 @@ data Value = Value Double
   | Parameter String Double
   | Relation (ParameterList -> Double)
 
-instance Eq Value where
-  (Value d1) == (Value d2) = d1 == d2
-  (Parameter n1 _) == (Parameter n2 _) = n1 == n2
-  _ == _ = False
-
 instance Show Value where
   show (Value d) = show d
   show (Parameter n d) = show n ++ "(" ++ show d ++ ")"

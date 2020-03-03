@@ -4,7 +4,7 @@ import Point
 import Value
 
 data Vector = Vector {vectorPoint :: Point}
-  deriving (Eq, Show)
+  deriving (Show)
 
 instance Num Vector where
   (+) (Vector (x1,y1,z1)) (Vector (x2,y2,z2)) = Vector (x1+x2,y1+y2,z1+z2)

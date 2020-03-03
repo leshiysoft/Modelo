@@ -11,7 +11,7 @@ data Sphere = Sphere
   {sphereCenter :: Point
   ,sphereRadius :: Value
   }
-  deriving (Eq, Show)
+  deriving (Show)
 
 sphereCenterEdge :: Point -> Point -> Sphere
 sphereCenterEdge c e = Sphere c $ dist $ vectorBeginEnd c e

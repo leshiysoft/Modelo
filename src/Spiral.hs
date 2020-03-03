@@ -15,7 +15,7 @@ data Spiral = Spiral
   , spiralTurns :: Value -- количество витков
   , spiralRadius2 :: Value -- радиус последнего витка
   }
-  deriving(Eq, Show)
+  deriving(Show)
 
 spiralStart :: Spiral -> Point
 spiralStart (Spiral c _ r _ _) = move r c

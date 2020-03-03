@@ -2,8 +2,9 @@ module Mesh where
 
 import Point
 import Value
-import Data.List
 import Vector
+
+import Data.List
 
 data Mesh = Mesh
   {meshVertexes :: [Point]

@@ -8,7 +8,7 @@ import Shape
 data Section = Section {
   sectionStart :: Point,
   sectionEnd :: Point}
-  deriving (Eq, Show)
+  deriving (Show)
 
 sectionMiddle :: Section -> Point
 sectionMiddle s = vectorPoint $ times 0.5 (vStart + vEnd)

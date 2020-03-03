@@ -8,7 +8,7 @@ import Combinations
 import Shape
 
 data Arc = Arc Sphere Vector Vector
-  deriving (Eq, Show)
+  deriving (Show)
 
 arcStart :: Arc -> Point
 arcStart (Arc s v1 _) = spherePoint s v1
