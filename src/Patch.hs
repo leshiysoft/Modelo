@@ -14,6 +14,8 @@ data Patch = Patch
   ,endCurve :: Curve
   }
 
+--TODO: реализовать инстанс для Surface
+
 instance Shape Patch where
   move v (Patch l r s e) = Patch l' r' s' e'
     where

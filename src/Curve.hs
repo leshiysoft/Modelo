@@ -9,6 +9,8 @@ import Mesh
 data Curve = Curve (Value -> Point)
   | CurveDir (Value -> Point) (Value -> Vector)
 
+--TODO: релизовать внутреннее значение разбиения
+
 curveFunction :: Curve -> (Value -> Point)
 curveFunction (Curve cf) = cf
 curveFunction (CurveDir cf _) = cf

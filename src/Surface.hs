@@ -7,6 +7,8 @@ import Shape
 
 data Surface = Surface (Value -> Value -> Point)
 
+--TODO: релизовать внутреннее значение разбиения
+
 surfaceFunction :: Surface -> (Value -> Value -> Point)
 surfaceFunction (Surface sf) = sf
 
